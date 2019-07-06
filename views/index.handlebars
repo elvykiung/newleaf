@@ -2,16 +2,18 @@
   <h1>Welcome!</h1>
 
   <input type="text" id="search" placeholder="Search plants" />
+  <div id="searchResults" />
   <script>
     $(document).ready(function () {
       $("#search").on('keyup', (e) => {
         //if (e.keyCode == 13) {
         var search = $(e.target).val()
         console.log("[search] autocomplete: " + search)
-        $.ajax(`/api/plants/common_name/${search}`, function (data) {
-          console.log("[search] autocomplete results for: " + search + " = " + data);
-          $("#search").append(data)
-        });
+        $.ajax(`/api/plants/common_name/${search}`)
+          .done(function (data) {
+            console.log("[search] autocomplete results for: " + search + " = " + data);
+            $("#searchResults").html(JSON.stringify(data, null, 2))
+          });
         //}
       });
     });
